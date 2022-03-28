@@ -1,6 +1,31 @@
-POST http://localhost:3000/api/item
+### User Create
+POST http://localhost:3000/api/user
+Content-Type: application/json
+
+{
+  "email": "in363@naver.com",
+  "phoneNumber": "11111",
+  "name": "23123",
+  "nickName": "jin",
+  "password": "123123"
+}
+
+### Member
+GET http://localhost:3000/api/member
 Content-Type: application/json
 
 {}
 
-###
+### member no
+GET http://localhost:3000/api/member/2
+Content-Type: application/json
+
+{}
+
+
+### User
+GET http://localhost:3000/api/user
+Content-Type: application/json
+
+{}
+

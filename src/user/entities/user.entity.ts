@@ -6,7 +6,7 @@ export class User {
   id: number;
 
   @Column()
-  Email: string
+  email: string
 
   @Column()
   password: string
@@ -19,5 +19,8 @@ export class User {
 
   @Column()
   phoneNumber: string
+
+  @Column({ default: true})
+  isValid: boolean
 
 }
