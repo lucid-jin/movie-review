@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import {Injectable} from '@nestjs/common';
+import {ConfigService} from '@nestjs/config';
+import {TypeOrmModuleOptions, TypeOrmOptionsFactory} from '@nestjs/typeorm';
 
 @Injectable()
 export class DBConfigService implements TypeOrmOptionsFactory {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) {
+  }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
@@ -15,11 +16,12 @@ export class DBConfigService implements TypeOrmOptionsFactory {
       host: this.configService.get<string>('DB_HOST'),
       database: this.configService.get<string>('DB_SCHEMA'),
       entities: ['dist/**/**/*.entity{.ts,.js}'],
-      ssl: {
-        rejectUnauthorized: false
-      },
+      ssl: process.env.NODE_ENV !== 'production'
+        ? {rejectUnauthorized: false}
+        : false,
       autoLoadEntities: true,
-      synchronize: true
+      synchronize: true,
+      logging: true
     };
   }
 }
