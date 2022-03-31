@@ -6,10 +6,10 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {ConfigModule} from "@nestjs/config";
 
 import {AppLoggerMiddleware} from "./config/AppLoggerMiddleware";
-import {Connection} from "typeorm";
-import {User} from "./user/entities/user.entity";
 import {DBConfigModule} from "./config/database/config.module";
 import {DBConfigService} from "./config/database/config.service";
+import { BcryptModule } from './util/bcrypt/bcrypt.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,14 +20,14 @@ import {DBConfigService} from "./config/database/config.service";
       inject: [DBConfigService]
     }),
     UserModule,
+    BcryptModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
-  constructor(
-    // private connection: Connection
-  ) {}
+  constructor() {}
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AppLoggerMiddleware).forRoutes('*');
   }
