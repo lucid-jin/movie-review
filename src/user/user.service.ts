@@ -21,8 +21,7 @@ export class UserService {
     }
   }
 
-  findAll({email, isValid = true}: { email?: string, isValid?: boolean}) {
-    console.log(email)
+  findAll({email, isValid = true}: { email?: string, isValid?: boolean }) {
 
     return this.userRepository.find({
       where: {
@@ -32,8 +31,15 @@ export class UserService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne({email, nickName, isValid = true}: { nickName?: string, email?: string, isValid?: boolean }) {
+
+    return this.userRepository.findOne({
+      where: {
+        ...(email && {email}),
+        ...(nickName && {nickName}),
+        isValid
+      }
+    });
   }
 
   // update(id: number, updateUserDto: UpdateUserDto) {

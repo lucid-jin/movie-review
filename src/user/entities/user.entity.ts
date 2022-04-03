@@ -1,26 +1,36 @@
 import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
-@Entity('User')
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    width: 50
+  })
   email: string
 
-  @Column()
+  @Column({
+    width: 50
+  })
   password: string
 
-  @Column()
+  @Column({
+    width: 30
+  })
   name: string
 
-  @Column()
+  @Column({
+    width: 30
+  })
   nickName: string
 
-  @Column()
-  phoneNumber: string
+  @Column({
+    width: 20
+  })
+  phoneNumber: string;
 
-  @Column({ default: true})
+  @Column({default: true})
   isValid: boolean
 
 }

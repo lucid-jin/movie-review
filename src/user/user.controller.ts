@@ -3,21 +3,21 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   HttpCode,
-  InternalServerErrorException, UsePipes, HttpException, BadRequestException
+  InternalServerErrorException, UsePipes, HttpException, BadRequestException, Query
 } from '@nestjs/common';
 import {UserService} from './user.service';
 import {ApiCreatedResponse} from '@nestjs/swagger';
 import {CreateUserDto, CreateUserResponseDto} from "./schema/user.schema";
 import {ZodValidationPipe} from "@anatine/zod-nestjs";
+import {BcryptService} from "../util/bcrypt/bcrypt.service";
+import {string, z, ZodError} from "zod";
 
 @Controller('user')
 @UsePipes(ZodValidationPipe)
 export class UserController {
-  constructor(private readonly userService: UserService) {
+  constructor(private readonly userService: UserService, private readonly bcryptService: BcryptService) {
   }
 
   @Post()
@@ -26,8 +26,9 @@ export class UserController {
     description: 'The record has been successfully created.',
     type: CreateUserResponseDto,
   })
-  async create(@Body() createUserDto: CreateUserDto): Promise<CreateUserResponseDto> {
-    const alreadyUser = this.userService.findAll({email: createUserDto.email, isValid: true})
+  async create(@Body() createUserDto: CreateUserDto
+  ): Promise<CreateUserResponseDto> {
+    const alreadyUser = await this.userService.findOne({email: createUserDto.email, isValid: true})
 
     if (alreadyUser) {
       const error: CreateUserResponseDto = {
@@ -39,16 +40,17 @@ export class UserController {
       throw new BadRequestException(error)
     }
 
-    const {password, ...user} = await this.userService.create(createUserDto);
-    
+    const hashPassword = await this.bcryptService.makeHash(createUserDto.password)
+
+    const {password, ...user} = await this.userService.create({...createUserDto, password: hashPassword});
+
     return {
       Response: {
         code: 1000,
         message: 'ok'
       },
-      ...user
+      user
     }
-
   }
 
   @Get()
@@ -56,18 +58,39 @@ export class UserController {
     return this.userService.findAll({});
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
+  @Get('identities')
+  async identify(@Query() {value, type}: { value: string, type: 'email' | 'nickName' }) {
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.userService.update(+id, updateUserDto);
-  // }
+    const typeEnum = z.enum(['email', 'nickName']);
+    try {
+      typeEnum.parse(type)
+      if (type === 'email') {
+        z.string().email().parse(value)
+      }
+      z.string().min(3).max(15).parse(value)
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
+    } catch (e) {
+      const error: ZodError = e;
+      throw new BadRequestException({
+          Response: {
+            message: error.issues.map(is => is.message).join(',')
+          }
+        }
+      )
+    }
+
+      const user = await this.userService.findOne({
+        [type]: [value]
+      });
+
+      const isExistUser = !!user;
+
+      return {
+        Response: {
+          code: 1000,
+          message: !isExistUser ? '존재하지않는 이메일 입니다' : '이미 있는 이메일 입니다'
+        },
+        isExist: isExistUser
+      }
+    }
 }

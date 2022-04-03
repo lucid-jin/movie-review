@@ -8,6 +8,8 @@ export class DBConfigService implements TypeOrmOptionsFactory {
   }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
+    const isDevelopment: boolean = process.env.NODE_ENV === 'development';
+
     return {
       type: 'postgres',
       username: this.configService.get<string>('DB_USER'),
@@ -16,12 +18,10 @@ export class DBConfigService implements TypeOrmOptionsFactory {
       host: this.configService.get<string>('DB_HOST'),
       database: this.configService.get<string>('DB_SCHEMA'),
       entities: ['dist/**/**/*.entity{.ts,.js}'],
-      ssl: process.env.NODE_ENV !== 'production'
-        ? {rejectUnauthorized: false}
-        : false,
+      ssl: {rejectUnauthorized: isDevelopment},
       autoLoadEntities: true,
-      synchronize: true,
-      logging: true
+      synchronize: isDevelopment,
+      logging: isDevelopment,
     };
   }
 }
