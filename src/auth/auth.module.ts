@@ -5,9 +5,9 @@ import {UserService} from "../user/user.service";
 import {BcryptService} from "../util/bcrypt/bcrypt.service";
 import {UserModule} from "../user/user.module";
 import {JwtModule} from "@nestjs/jwt";
-import {jwtConstants} from "./constants/jwt.constant";
 import {PassportModule} from "@nestjs/passport";
 import {JwtStrategy} from "./jwt.strategy";
+import jwtConstant from "./constants/jwt.constant";
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import {JwtStrategy} from "./jwt.strategy";
       defaultStrategy: 'jwt'
     }),
     JwtModule.register({
-      secret: jwtConstants.secret,
+      secret: jwtConstant().secret,
       signOptions: {expiresIn: '60s'},
     })
   ],

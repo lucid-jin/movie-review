@@ -1,21 +1,13 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  HttpCode,
-  InternalServerErrorException, UsePipes, HttpException, BadRequestException, Query
-} from '@nestjs/common';
+import {BadRequestException, Body, Controller, Get, HttpCode, Post, Query, UsePipes} from '@nestjs/common';
 import {UserService} from './user.service';
 import {ApiCreatedResponse} from '@nestjs/swagger';
 import {CreateUserDto, CreateUserResponseDto} from "./schema/user.schema";
 import {ZodValidationPipe} from "@anatine/zod-nestjs";
 import {BcryptService} from "../util/bcrypt/bcrypt.service";
-import {string, z, ZodError} from "zod";
+import {z, ZodError} from "zod";
 
 @Controller('user')
-@UsePipes(ZodValidationPipe)
+@UsePipes(ZodValidationPipe)       
 export class UserController {
   constructor(private readonly userService: UserService, private readonly bcryptService: BcryptService) {
   }
