@@ -17,8 +17,6 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() payload) {
-    console.log({payload}, payload.email)
-
     const user = await this.userService.findOne({email: payload.email})
 
     if (!user) {
@@ -57,11 +55,14 @@ export class AuthController {
     }
   }
 
-  @Get('profile')
+  @Get('me')
   @UseGuards(AuthGuard())
   getProfile(@Request() req) {
-    console.log(req.user)
-    return {}
+    return {
+      user: {
+        ...req.user
+      }
+    }
   }
 
 }
