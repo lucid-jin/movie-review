@@ -8,8 +8,9 @@ import {ConfigModule} from "@nestjs/config";
 import {AppLoggerMiddleware} from "./config/AppLoggerMiddleware";
 import {DBConfigModule} from "./config/database/config.module";
 import {DBConfigService} from "./config/database/config.service";
-import { BcryptModule } from './util/bcrypt/bcrypt.module';
-import { AuthModule } from './auth/auth.module';
+import {BcryptModule} from './util/bcrypt/bcrypt.module';
+import {AuthModule} from './auth/auth.module';
+import {ReviewModule} from './review/review.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     BcryptModule,
     AuthModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

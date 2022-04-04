@@ -1,8 +1,11 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Review} from "../../review/entities/review.entity";
 
 @Entity('user')
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({
+    type: 'bigint'
+  })
   id: number;
 
   @Column({
@@ -29,6 +32,12 @@ export class User {
     width: 20
   })
   phoneNumber: string;
+
+  @OneToMany(type => Review, review => review.no)
+  review: Review;
+
+  @CreateDateColumn({})
+  createdAt: Date;
 
   @Column({default: true})
   isValid: boolean

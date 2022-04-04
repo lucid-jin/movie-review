@@ -4,10 +4,11 @@ import {UserController} from './user.controller';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {User} from "./entities/user.entity";
 import {BcryptService} from "../util/bcrypt/bcrypt.service";
+import {Review} from "../review/entities/review.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User,Review]),
   ],
   providers: [UserService, BcryptService],
   controllers: [
