@@ -15,8 +15,8 @@ export class BcryptService {
     return await bcrypt.hash(plainText, saltOrRounds)
   }
 
-  async compareHash(planText, hashText) {
-    return await bcrypt.compare(hashText, hashText)
+  async compareHash(planText, hashText): Promise<boolean> {
+    return await bcrypt.compare(planText, hashText)
   }
 
 

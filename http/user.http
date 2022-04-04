@@ -1,31 +1,33 @@
 ### User Create
 POST http://localhost:3000/api/user
 Content-Type: application/json
+cors-secret-key: 131312
 
 {
-  "email": "in363@naver.com",
+  "email": "in362@naver.com",
   "phoneNumber": "11111",
   "name": "23123",
   "nickName": "jin",
   "password": "123123"
 }
 
-### Member
-GET http://localhost:3000/api/member
+### email check
+#GET http://localhost:3000/api/user/identities?type=email&value=in362@naver.com
+GET http://localhost:3000/api/user/identities?type=email&value=in362
 Content-Type: application/json
 
-{}
 
-### member no
-GET http://localhost:3000/api/member/2
+### login
+POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
-{}
+{
+  "email": "in362@naver.com",
+  "password": "123123"
+}
 
 
-### User
-GET http://localhost:3000/api/user
+### profile
+GET http://localhost:3000/api/auth/profile
 Content-Type: application/json
-
-{}
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOjIsImlhdCI6MTY0ODk5MDUyMiwiZXhwIjoxNjQ4OTkwNTgyfQ.i0BM8BNOFHX5PsIB1lAB78yQHmjhXinWfVawVggWzqI

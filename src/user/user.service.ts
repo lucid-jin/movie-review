@@ -31,11 +31,20 @@ export class UserService {
     });
   }
 
-  findOne({email, nickName, isValid = true}: { nickName?: string, email?: string, isValid?: boolean }) {
+  findOne({
+            email,
+            nickName,
+            name,
+            isValid = true
+          }: { name?: string, nickName?: string, email?: string, isValid?: boolean }) {
+    if ((!email && !nickName && !name)) {
+      return undefined;
+    }
 
     return this.userRepository.findOne({
       where: {
         ...(email && {email}),
+        ...(name && {name}),
         ...(nickName && {nickName}),
         isValid
       }
