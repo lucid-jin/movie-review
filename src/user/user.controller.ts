@@ -1,13 +1,16 @@
-import {BadRequestException, Body, Controller, Get, HttpCode, Post, Query, UsePipes} from '@nestjs/common';
+import {BadRequestException, Body, Controller, Get, HttpCode, Post, Query} from '@nestjs/common';
 import {UserService} from './user.service';
-import {ApiCreatedResponse} from '@nestjs/swagger';
-import {CreateUserDto, CreateUserResponseDto} from "./schema/user.schema";
-import {ZodValidationPipe} from "@anatine/zod-nestjs";
+import {ApiBadRequestResponse, ApiCreatedResponse, ApiResponse} from '@nestjs/swagger';
+import {
+  CreateIdentifyDto,
+  CreateUserDto,
+  CreateUserResponseDto,
+  GlobalAPI,
+  IdentifyResponseDto
+} from "./schema/user.schema";
 import {BcryptService} from "../util/bcrypt/bcrypt.service";
-import {z, ZodError} from "zod";
 
 @Controller('user')
-@UsePipes(ZodValidationPipe)       
 export class UserController {
   constructor(private readonly userService: UserService, private readonly bcryptService: BcryptService) {
   }
@@ -15,16 +18,20 @@ export class UserController {
   @Post()
   @HttpCode(201)
   @ApiCreatedResponse({
-    description: 'The record has been successfully created.',
+    description: '유저 성공시.',
     type: CreateUserResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+    type: GlobalAPI,
   })
   async create(@Body() createUserDto: CreateUserDto
   ): Promise<CreateUserResponseDto> {
     const alreadyUser = await this.userService.findOne({email: createUserDto.email, isValid: true})
 
     if (alreadyUser) {
-      const error: CreateUserResponseDto = {
-        Response: {
+      const error = {
+        response: {
           code: 2000,
           message: '이미 사용 중인 있는 이메일입니다.'
         }
@@ -37,7 +44,7 @@ export class UserController {
     const {password, ...user} = await this.userService.create({...createUserDto, password: hashPassword});
 
     return {
-      Response: {
+      response: {
         code: 1000,
         message: 'ok'
       },
@@ -45,44 +52,25 @@ export class UserController {
     }
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll({});
-  }
 
   @Get('identities')
-  async identify(@Query() {value, type}: { value: string, type: 'email' | 'nickName' }) {
+  @ApiResponse({
+    status: 200, description: "닉네임 체크", type: IdentifyResponseDto
+  })
+  async identify(@Query() {value, type}: CreateIdentifyDto) {
 
-    const typeEnum = z.enum(['email', 'nickName']);
-    try {
-      typeEnum.parse(type)
-      if (type === 'email') {
-        z.string().email().parse(value)
-      }
-      z.string().min(3).max(15).parse(value)
+    const user = await this.userService.findOne({
+      [type]: [value]
+    });
 
-    } catch (e) {
-      const error: ZodError = e;
-      throw new BadRequestException({
-          Response: {
-            message: error.issues.map(is => is.message).join(',')
-          }
-        }
-      )
+    const isExistUser = !!user;
+
+    return {
+      Response: {
+        code: 1000,
+        message: !isExistUser ? '존재하지않는 이메일 입니다' : '이미 있는 이메일 입니다'
+      },
+      isExist: isExistUser
     }
-
-      const user = await this.userService.findOne({
-        [type]: [value]
-      });
-
-      const isExistUser = !!user;
-
-      return {
-        Response: {
-          code: 1000,
-          message: !isExistUser ? '존재하지않는 이메일 입니다' : '이미 있는 이메일 입니다'
-        },
-        isExist: isExistUser
-      }
-    }
+  }
 }
