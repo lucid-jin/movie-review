@@ -1,5 +1,3 @@
-const jwtConstant = () => ({
+export default () => ({
   secret: process.env['JWT_KEY']
 })
-
-export default jwtConstant;
