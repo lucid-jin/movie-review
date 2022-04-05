@@ -42,4 +42,10 @@ export class User {
   @Column({default: true})
   isValid: boolean
 
+  static removePassword(userObj: User) {
+    return Object.fromEntries(
+      Object.entries(userObj).filter(([key, val]) => key !== 'password')
+    );
+  }
+
 }

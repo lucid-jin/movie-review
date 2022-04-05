@@ -11,7 +11,12 @@ export class Review {
   })
   contents: string
 
-  @Column("simple-array")
+  @Column({ type: "int"})
+  ratings: number;
+
+  @Column("simple-array", {
+    default: [""]
+  })
   likes: number[];
 
   @Column({})

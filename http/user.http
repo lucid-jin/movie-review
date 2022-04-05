@@ -12,22 +12,6 @@ cors-secret-key: 131312
 }
 
 ### email check
-#GET http://localhost:3000/api/user/identities?type=email&value=in362@naver.com
 GET http://localhost:3000/api/user/identities?type=email&value=in362
 Content-Type: application/json
 
-
-### login
-POST http://localhost:3000/api/auth/login
-Content-Type: application/json
-
-{
-  "email": "in362@naver.com",
-  "password": "123123"
-}
-
-
-### me
-GET http://localhost:3000/api/auth/me
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOjIsImlhdCI6MTY0ODk5MDUyMiwiZXhwIjoxNjQ4OTkwNTgyfQ.i0BM8BNOFHX5PsIB1lAB78yQHmjhXinWfVawVggWzqI

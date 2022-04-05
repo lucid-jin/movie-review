@@ -1,0 +1,11 @@
+POST http://localhost:3000/api/review/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
+
+{
+  "contents": "바보래요",
+  "ratings": 1,
+  "movieId": 1
+}
+
+###
