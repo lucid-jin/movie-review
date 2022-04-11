@@ -9,8 +9,7 @@ import {
   Put,
   Query,
   Request,
-  UseGuards,
-  ValidationPipe
+  UseGuards
 } from '@nestjs/common';
 import {ReviewService} from './review.service';
 import {CreateReviewDto} from './dto/create-review.dto';
@@ -25,7 +24,7 @@ export class ReviewController {
   @UseGuards(AuthGuard())
   @Post()
   async create(
-    @Body(new ValidationPipe()) createReviewDto: CreateReviewDto,
+    @Body() createReviewDto: CreateReviewDto,
     @Request() req
   ) {
     const review = await this.reviewService.create(createReviewDto, req.user)
@@ -40,10 +39,15 @@ export class ReviewController {
   }
 
   @Get()
-  findAll(@Query() {movieId}: { movieId?: number }) {
-    return this.reviewService.findAll({
-      movieId
-    });
+  async findAll(@Query() {movieId}: { movieId?: number }) {
+    return {
+      response: {
+        message: 'ok'
+      },
+      reviews: await this.reviewService.findAll({
+        movieId
+      })
+    } ;
   }
 
   @Get(':id')
