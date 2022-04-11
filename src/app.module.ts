@@ -11,6 +11,7 @@ import {DBConfigService} from "./config/database/config.service";
 import {BcryptModule} from './util/bcrypt/bcrypt.module';
 import {AuthModule} from './auth/auth.module';
 import {ReviewModule} from './review/review.module';
+import {CommentModule} from './comment/comment.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import {ReviewModule} from './review/review.module';
     BcryptModule,
     AuthModule,
     ReviewModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

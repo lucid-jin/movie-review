@@ -1,5 +1,15 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from "typeorm";
 import {User} from "../../user/entities/user.entity";
+import {Comment} from "../../comment/entities/comment.entity";
 
 @Entity('review')
 export class Review {
@@ -23,7 +33,11 @@ export class Review {
   movieId: number;
 
   @ManyToOne(_ => User, user => user.id)
+  @JoinTable()
   user: User;
+
+  @OneToMany(_ => Comment, comment => comment.no)
+  comments: Comment[];
 
   @CreateDateColumn({})
   createdAt: Date;

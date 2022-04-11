@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Request, Post, UseGuards, UsePipes} from '@nestjs/common';
+import {Body, Controller, Get, Post, Request, UseGuards, UsePipes} from '@nestjs/common';
 import {AuthService} from './auth.service';
 import {UserService} from "../user/user.service";
 import {BcryptService} from "../util/bcrypt/bcrypt.service";
@@ -17,7 +17,8 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() payload) {
-    const user = await this.userService.findOne({email: payload.email})
+    const user = await this.userService.findOne({email: payload.email});
+
 
     if (!user) {
       return {
@@ -32,7 +33,7 @@ export class AuthController {
 
     if (!isOK) {
       return {
-        Response: {
+        response: {
           code: 3001,
           message: '이메일 혹은 비밀번호가 일치하지 않습니다.'
         }

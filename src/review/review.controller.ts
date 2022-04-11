@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -27,7 +28,15 @@ export class ReviewController {
     @Body(new ValidationPipe()) createReviewDto: CreateReviewDto,
     @Request() req
   ) {
-    return await this.reviewService.create(createReviewDto, req.user)
+    const review = await this.reviewService.create(createReviewDto, req.user)
+
+    return {
+      response: {
+        message: 'ok',
+        code: 1001
+      },
+      review
+    }
   }
 
   @Get()
@@ -38,22 +47,50 @@ export class ReviewController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const review = await this.reviewService.findOne(+id)
+    if (!review) throw new NotFoundException({
+      response: {
+        message: '존재하지 않는 리뷰 입니다.'
+      }
+    })
+
+    return {
+      response: {
+        message: 'ok'
+      },
+      review
+    };
   }
 
+  @UseGuards(AuthGuard())
   @Put(':id')
   async update(
     @Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto,
     @Request() req
   ) {
-    await this.reviewService.checkValidation(+id, req.user);
-    return this.reviewService.update(+id, updateReviewDto);
+    const review = await this.reviewService.checkValidation(+id, req.user);
+
+    return {
+      response: {
+        message: 'ok',
+        code: 1000
+      },
+      review: await this.reviewService.update(+id, updateReviewDto, review)
+    }
   }
 
+  @UseGuards(AuthGuard())
   @Delete(':id')
   async remove(@Param('id') id: string, @Request() req) {
-    await this.reviewService.checkValidation(+id, req.user);
-    return this.reviewService.remove(+id);
+    const review = await this.reviewService.checkValidation(+id, req.user);
+    await this.reviewService.remove(+id, review);
+
+    return {
+      response: {
+        message: 'ok',
+        code: 1000
+      }
+    }
   }
 }

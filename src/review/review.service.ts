@@ -1,7 +1,7 @@
-import {BadRequestException, Injectable, UnauthorizedException} from '@nestjs/common';
+import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {CreateReviewDto} from './dto/create-review.dto';
 import {UpdateReviewDto} from './dto/update-review.dto';
-import {ReviewRepository} from "./dto/review.repository";
+import {ReviewRepository} from "./review.repository";
 import {User} from "../user/entities/user.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Review} from "./entities/review.entity";
@@ -21,12 +21,15 @@ export class ReviewService {
     return value;
   }
 
-  create(createReviewDto: CreateReviewDto, user: User) {
-    return this.reviewRepository.save({
+  async create(createReviewDto: CreateReviewDto, user: User) {
+    const review = this.reviewRepository.create({
       ...createReviewDto,
       user,
-      likes: [],
-    }, {}).then(this.removePassword)
+      likes: []
+    })
+    this.removePassword(review);
+
+    return this.reviewRepository.save(review)
   }
 
   findAll({movieId}: { movieId?: number }) {
@@ -35,41 +38,51 @@ export class ReviewService {
         ...(movieId && {movieId})
       },
       skip: 0,
-      take: 50
-    }).then(value => this.removePassword(value));
+      take: 50,
+      relations: ['user']
+    }).then((users => users.map(this.removePassword)));
   }
 
-  findOne(id: number) {
-    return this.reviewRepository.findOne({
+  async findOrFail(id: number){
+    return await this.reviewRepository.findOneOrFail({
       where: {
         no: id,
-      }
-    }).then(this.removePassword)
-  }
-
-  update(id: number, {contents, ratings}: UpdateReviewDto) {
-    return this.reviewRepository.save({
-      ratings,
-      contents,
-      no: id
-    }, {})
-  }
-
-  remove(id: number) {
-    return this.reviewRepository.save({
-      isValid: false,
-      no: id
+        isValid: true
+      },
     })
   }
 
-  async checkValidation(id: number, user: User) {
+  async findOne(id: number) {
+    return await this.reviewRepository.findOne({
+      where: {
+        no: id,
+        isValid: true
+      },
+      relations: ['user'],
+    }).then(this.removePassword)
+  }
 
+  async update(no: number, {contents, ratings}: UpdateReviewDto, review: Review) {
+    review.contents = contents;
+    review.ratings = ratings;
+
+    return this.reviewRepository.save(review)
+  }
+
+  remove(id: number, review: Review) {
+    review.isValid = false;
+    return this.reviewRepository.save(review);
+  }
+
+  async checkValidation(id: number, user: User) {
     const review = await this.findOne(+id);
     if (!review) {
-      new BadRequestException({message: '존재하지 않는 리뷰입니다.'})
+      throw new NotFoundException({response: {message: '존재하지 않는 리뷰입니다.'}})
     }
-    if (+review.user.id === +user.id) {
-      new UnauthorizedException({message: '작성자와 다른 아이디 입니다..'})
+    
+    if (+review.user?.id !== +user.id) {
+      throw new UnauthorizedException({message: '작성자와 다른 아이디 입니다..'})
     }
+    return review
   }
 }
