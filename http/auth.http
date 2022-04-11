@@ -11,4 +11,4 @@ Content-Type: application/json
 ### me
 GET http://localhost:3000/api/auth/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOjIsImlhdCI6MTY0ODk5MDUyMiwiZXhwIjoxNjQ4OTkwNTgyfQ.i0BM8BNOFHX5PsIB1lAB78yQHmjhXinWfVawVggWzqI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5Njc0MTQxLCJleHAiOjE2NDk2NzQyMDF9.f0E9-TD3GUqEm30koYhlrm0OvRb7hMyhq-6Z5jH3Y2I

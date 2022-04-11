@@ -66,7 +66,7 @@ export class UserController {
     const isExistUser = !!user;
 
     return {
-      Response: {
+      response: {
         code: 1000,
         message: !isExistUser ? '존재하지않는 이메일 입니다' : '이미 있는 이메일 입니다'
       },

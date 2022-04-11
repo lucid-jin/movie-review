@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     if (!user) {
       throw new UnauthorizedException({
-        Response: {
+        response: {
           code: 3000,
           message: '없습니다'
         }

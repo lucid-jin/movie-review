@@ -31,6 +31,7 @@ export class User {
   @Column({
     width: 20
   })
+  
   phoneNumber: string;
 
   @OneToMany(type => Review, review => review.no)
