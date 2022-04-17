@@ -29,8 +29,13 @@ export class Review {
   })
   likes: number[];
 
+  @Column({
+    enum: ['movie', 'tv']
+  })
+  targetType: 'movie' | 'tv'
+
   @Column({})
-  movieId: number;
+  targetId: number;
 
   @ManyToOne(_ => User, user => user.id)
   @JoinTable()

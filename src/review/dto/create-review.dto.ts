@@ -1,12 +1,20 @@
-import {IsInt, IsPositive, IsString, Max, Min} from "class-validator";
+import {IsEnum, IsInt, IsPositive, IsString, Max, Min} from "class-validator";
+
+enum TargetType {
+  'Movie'= 'movie',
+  'Tv' = 'tv'
+}
 
 export class CreateReviewDto {
   @IsString()
   contents: string;
 
+  @IsEnum(TargetType)
+  targetType: 'movie' | 'tv'
+
   @IsInt()
   @IsPositive()
-  movieId: number;
+  targetId: number;
 
   @IsInt({})
   @Min(1)

@@ -5,17 +5,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiL
 {
   "contents": "바보래요",
   "ratings": 1,
-  "movieId": 1
+  "targetType": "tv2",
+  "targetId": 124
 }
 
 ###update
-PUT http://localhost:3000/api/review/25
+PUT http://localhost:3000/api/review/28
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
 
 {
-  "contents": "변경",
-  "movieId": 25,
+  "contents": "변경2",
   "ratings": 25
 }
 
