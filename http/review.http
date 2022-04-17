@@ -1,3 +1,10 @@
+GET http://localhost:3000/api/review
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
+
+{}
+
+###
 POST http://localhost:3000/api/review/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
@@ -26,6 +33,6 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
 
 ### delete
-DELETE http://localhost:3000/api/review/25
+DELETE http://localhost:3000/api/review/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y

@@ -32,10 +32,11 @@ export class ReviewService {
     return this.reviewRepository.save(review)
   }
 
-  findAll({movieId}: { movieId?: number }) {
+  findAll(targetId: number, targetType: 'movie' | 'tv') {
     return this.reviewRepository.find({
       where: {
-        ...(movieId && {movieId})
+        ...(targetId && {targetId}),
+        ...(targetType && {targetType}),
       },
       skip: 0,
       take: 50,

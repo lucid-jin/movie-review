@@ -39,14 +39,13 @@ export class ReviewController {
   }
 
   @Get()
-  async findAll(@Query() {movieId}: { movieId?: number }) {
+  async findAll(@Query() {targetId, targetType}: { targetId: number, targetType: 'movie' | 'tv' } ) {
+
     return {
       response: {
         message: 'ok'
       },
-      reviews: await this.reviewService.findAll({
-        movieId
-      })
+      reviews: await this.reviewService.findAll(targetId, targetType)
     } ;
   }
 
