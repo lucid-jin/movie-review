@@ -28,7 +28,6 @@ export class Review {
     default: [""]
   })
   likes: number[];
-
   
   @Column({
     enum: ['movie', 'tv']
