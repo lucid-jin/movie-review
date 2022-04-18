@@ -20,7 +20,7 @@ export class DBConfigService implements TypeOrmOptionsFactory {
       entities: ['dist/**/**/*.entity{.ts,.js}'],
       ssl: {rejectUnauthorized: isDevelopment},
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
       logging: false,
     };
   }
