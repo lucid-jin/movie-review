@@ -1,4 +1,4 @@
-GET http://localhost:3000/api/review
+GET http://localhost:3000/api/review?targetType=tv&targetId=12610
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
 

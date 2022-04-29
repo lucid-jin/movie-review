@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,78 +10,113 @@ import {
   Put,
   Query,
   Request,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
-import {ReviewService} from './review.service';
-import {CreateReviewDto} from './dto/create-review.dto';
-import {UpdateReviewDto} from './dto/update-review.dto';
-import {AuthGuard} from "@nestjs/passport";
+import { ReviewService } from './review.service';
+import { CreateReviewDto } from './dto/create-review.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
+import { AuthGuard } from '@nestjs/passport';
+
+import { MovieService } from '../movie/movie.service';
 
 @Controller('review')
 export class ReviewController {
-  constructor(private readonly reviewService: ReviewService) {
-  }
+  constructor(
+    private readonly reviewService: ReviewService,
+    private readonly movieService: MovieService,
+  ) {}
 
   @UseGuards(AuthGuard())
   @Post()
-  async create(
-    @Body() createReviewDto: CreateReviewDto,
-    @Request() req
-  ) {
-    const review = await this.reviewService.create(createReviewDto, req.user)
+  async create(@Body() createReviewDto: CreateReviewDto, @Request() req) {
+    const title = await this.movieService.find(
+      createReviewDto.targetType,
+      createReviewDto.targetId,
+    );
+    const review = await this.reviewService.create(createReviewDto, req.user);
 
     return {
       response: {
         message: 'ok',
-        code: 1001
+        code: 1001,
       },
-      review
-    }
+      review: {
+        title,
+        ...review,
+      },
+    };
   }
 
   @Get()
-  async findAll(@Query() {targetId, targetType}: { targetId: number, targetType: 'movie' | 'tv' } ) {
+  async findAll(
+    @Query()
+    { targetId, targetType }: { targetId: number; targetType: 'movie' | 'tv' },
+  ) {
+    const title = await this.movieService.find(targetType, targetId);
+
+    const _reviews = await this.reviewService.findAll(targetId, targetType);
+    const reviews = _reviews.map((d) => ({ title, ...d }));
 
     return {
       response: {
-        message: 'ok'
+        message: 'ok',
       },
-      reviews: await this.reviewService.findAll(targetId, targetType)
-    } ;
+      reviews,
+    };
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const review = await this.reviewService.findOne(+id)
-    if (!review) throw new NotFoundException({
-      response: {
-        message: '존재하지 않는 리뷰 입니다.'
-      }
-    })
+    const data = await this.reviewService.findOne(+id);
+    if (!data)
+      throw new NotFoundException({
+        response: {
+          message: '존재하지 않는 리뷰 입니다.',
+        },
+      });
+
+    const title = await this.movieService.find(data.targetType, data.targetId);
 
     return {
       response: {
-        message: 'ok'
+        message: 'ok',
       },
-      review
+      review: {
+        title,
+        ...data,
+      },
     };
   }
 
   @UseGuards(AuthGuard())
   @Put(':id')
   async update(
-    @Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto,
-    @Request() req
+    @Param('id') id: string,
+    @Body() updateReviewDto: UpdateReviewDto,
+    @Request() req,
   ) {
     const review = await this.reviewService.checkValidation(+id, req.user);
+
+    const title = await this.movieService.find(
+      review.targetType,
+      review.targetId,
+    );
+    const resData = await this.reviewService.update(
+      +id,
+      updateReviewDto,
+      review,
+    );
 
     return {
       response: {
         message: 'ok',
-        code: 1000
+        code: 1000,
       },
-      review: await this.reviewService.update(+id, updateReviewDto, review)
-    }
+      review: {
+        title,
+        ...resData,
+      },
+    };
   }
 
   @UseGuards(AuthGuard())
@@ -92,8 +128,8 @@ export class ReviewController {
     return {
       response: {
         message: 'ok',
-        code: 1000
-      }
-    }
+        code: 1000,
+      },
+    };
   }
 }
