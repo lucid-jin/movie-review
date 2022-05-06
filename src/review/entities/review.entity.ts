@@ -27,7 +27,7 @@ export class Review {
   @Column('simple-array', {
     default: [''],
   })
-  likes: number[];
+  likes: string[];
 
   @Column({
     enum: ['movie', 'tv'],
