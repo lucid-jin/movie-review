@@ -11,7 +11,7 @@ export class MovieService {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  async find(type: 'tv' | 'movie', id): any {
+  async find(type: 'tv' | 'movie', id): Promise<string> {
     if (!type || !id) {
       throw new BadRequestException({
         message: ['targetType required', 'targetId required'],
@@ -25,9 +25,13 @@ export class MovieService {
     // );
     const key = type === 'movie' ? 'title' : 'name';
 
-    return this.httpService
-      .get(`${type}/${id}`, {})
-      .pipe(map((res: AxiosResponse) => res.data[key]))
-      .toPromise();
+    try {
+      return this.httpService
+        .get(`${type}/${id}`, {})
+        .pipe(map((res: AxiosResponse) => res.data[key]))
+        .toPromise();
+    } catch (e) {
+      return '';
+    }
   }
 }

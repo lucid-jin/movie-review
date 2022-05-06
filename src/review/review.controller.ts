@@ -4,6 +4,7 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -28,10 +29,19 @@ export class ReviewController {
   @UseGuards(AuthGuard())
   @Post()
   async create(@Body() createReviewDto: CreateReviewDto, @Request() req) {
-    const targetTitle = await this.movieService.find(
-      createReviewDto.targetType,
-      createReviewDto.targetId,
-    );
+    let targetTitle = '';
+    try {
+      targetTitle = await this.movieService.find(
+        createReviewDto.targetType,
+        createReviewDto.targetId,
+      );
+    } catch (e) {
+      if (!targetTitle) {
+        throw new NotFoundException({
+          message: `${createReviewDto.targetType}: ${createReviewDto.targetId} 는 존재하지 않습니다`,
+        });
+      }
+    }
 
     const review = await this.reviewService.create(
       { ...createReviewDto, targetTitle },
