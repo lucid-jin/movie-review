@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -29,11 +28,15 @@ export class ReviewController {
   @UseGuards(AuthGuard())
   @Post()
   async create(@Body() createReviewDto: CreateReviewDto, @Request() req) {
-    const title = await this.movieService.find(
+    const targetTitle = await this.movieService.find(
       createReviewDto.targetType,
       createReviewDto.targetId,
     );
-    const review = await this.reviewService.create(createReviewDto, req.user);
+
+    const review = await this.reviewService.create(
+      { ...createReviewDto, targetTitle },
+      req.user,
+    );
 
     return {
       response: {
@@ -41,7 +44,7 @@ export class ReviewController {
         code: 1001,
       },
       review: {
-        title,
+        title: targetTitle,
         ...review,
       },
     };
@@ -52,10 +55,8 @@ export class ReviewController {
     @Query()
     { targetId, targetType }: { targetId: number; targetType: 'movie' | 'tv' },
   ) {
-    const title = await this.movieService.find(targetType, targetId);
-
     const _reviews = await this.reviewService.findAll(targetId, targetType);
-    const reviews = _reviews.map((d) => ({ title, ...d }));
+    const reviews = _reviews.map((d) => ({ title: d.targetTitle, ...d }));
 
     return {
       response: {
@@ -75,14 +76,12 @@ export class ReviewController {
         },
       });
 
-    const title = await this.movieService.find(data.targetType, data.targetId);
-
     return {
       response: {
         message: 'ok',
       },
       review: {
-        title,
+        title: data.targetTitle,
         ...data,
       },
     };
@@ -97,10 +96,6 @@ export class ReviewController {
   ) {
     const review = await this.reviewService.checkValidation(+id, req.user);
 
-    const title = await this.movieService.find(
-      review.targetType,
-      review.targetId,
-    );
     const resData = await this.reviewService.update(
       +id,
       updateReviewDto,
@@ -113,7 +108,7 @@ export class ReviewController {
         code: 1000,
       },
       review: {
-        title,
+        title: resData.targetTitle,
         ...resData,
       },
     };

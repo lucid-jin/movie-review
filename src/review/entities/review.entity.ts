@@ -6,10 +6,10 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
-} from "typeorm";
-import {User} from "../../user/entities/user.entity";
-import {Comment} from "../../comment/entities/comment.entity";
+  UpdateDateColumn,
+} from 'typeorm';
+import { User } from '../../user/entities/user.entity';
+import { Comment } from '../../comment/entities/comment.entity';
 
 @Entity('review')
 export class Review {
@@ -17,31 +17,36 @@ export class Review {
   no: number;
 
   @Column({
-    type: 'text'
+    type: 'text',
   })
-  contents: string
+  contents: string;
 
-  @Column({ type: "int"})
+  @Column({ type: 'int' })
   ratings: number;
 
-  @Column("simple-array", {
-    default: [""]
+  @Column('simple-array', {
+    default: [''],
   })
   likes: number[];
-  
+
   @Column({
-    enum: ['movie', 'tv']
+    enum: ['movie', 'tv'],
   })
-  targetType: 'movie' | 'tv'
+  targetType: 'movie' | 'tv';
 
   @Column({})
   targetId: number;
 
-  @ManyToOne(_ => User, user => user.id)
+  @Column({
+    nullable: true,
+  })
+  targetTitle: string;
+
+  @ManyToOne(() => User, (user) => user.id)
   @JoinTable()
   user: User;
 
-  @OneToMany(_ => Comment, comment => comment.no)
+  @OneToMany(() => Comment, (comment) => comment.no)
   comments: Comment[];
 
   @CreateDateColumn({})
@@ -50,7 +55,6 @@ export class Review {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column({default: true})
-  isValid: boolean
-
+  @Column({ default: true })
+  isValid: boolean;
 }
