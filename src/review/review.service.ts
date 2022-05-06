@@ -44,6 +44,7 @@ export class ReviewService {
       where: {
         ...(targetId && { targetId }),
         ...(targetType && { targetType }),
+        isValid: true,
       },
       skip: 0,
       take: 50,
@@ -99,10 +100,25 @@ export class ReviewService {
     }
 
     if (+review.user?.id !== +user.id) {
-      throw new UnauthorizedException({
+      throw new ForbiddenException({
         message: '작성자와 다른 아이디 입니다..',
       });
     }
     return review;
+  }
+
+  async findReviewOrNotFondError(id: number) {
+    const data = await this.findOne(+id);
+    if (!data) {
+      throw new NotFoundException({
+        response: { message: '존재하지 않는 리뷰 입니다.' },
+      });
+    }
+
+    return data;
+  }
+
+  async save(review: Review) {
+    return await this.reviewRepository.save(review);
   }
 }
