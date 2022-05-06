@@ -2,8 +2,8 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -68,13 +68,7 @@ export class ReviewController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const data = await this.reviewService.findOne(+id);
-    if (!data)
-      throw new NotFoundException({
-        response: {
-          message: '존재하지 않는 리뷰 입니다.',
-        },
-      });
+    const data = await this.reviewService.findReviewOrNotFondError(+id);
 
     return {
       response: {
@@ -125,6 +119,58 @@ export class ReviewController {
         message: 'ok',
         code: 1000,
       },
+    };
+  }
+
+  @UseGuards(AuthGuard())
+  @Put(':id/like')
+  async like(@Param('id') reviewId: string, @Request() request) {
+    const data = await this.reviewService.findReviewOrNotFondError(+reviewId);
+    const userId = parseInt(request.user.id, 10);
+
+    if (data.user.id === userId) {
+      throw new ForbiddenException({
+        message: '본인은 추천할수 없습니다',
+      });
+    }
+
+    if (data.likes.find((d) => d === String(userId))) {
+      throw new ForbiddenException({
+        message: '이미 추천한 리뷰 입니다',
+      });
+    }
+
+    data.likes.push(+userId);
+    await this.reviewService.save(data);
+
+    return {
+      response: {
+        message: 'ok',
+        code: 1000,
+      },
+      totalLike: data.likes.length,
+    };
+  }
+
+  @UseGuards(AuthGuard())
+  @Put(':id/unlike')
+  async unlike(@Param('id') id: string, @Request() request) {
+    const data = await this.reviewService.findReviewOrNotFondError(+id);
+
+    if (data.user.id === request.user.id) {
+      throw new ForbiddenException({
+        message: '본인은 추천할수 없습니다',
+      });
+    }
+
+    data.likes = data.likes.filter((d) => d === id);
+    await this.reviewService.save(data);
+    return {
+      response: {
+        message: 'ok',
+        code: 1000,
+      },
+      totalLike: data.likes.length,
     };
   }
 }
