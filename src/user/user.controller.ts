@@ -49,10 +49,8 @@ export class UserController {
 
     if (alreadyUser) {
       const error = {
-        response: {
-          code: 2000,
-          message: '이미 사용 중인 있는 이메일입니다.',
-        },
+        code: 2000,
+        message: '이미 사용 중인 있는 이메일입니다.',
       };
       throw new BadRequestException(error);
     }
@@ -67,10 +65,7 @@ export class UserController {
     });
 
     return {
-      response: {
-        code: 1000,
-        message: 'ok',
-      },
+      message: 'ok',
       user,
     };
   }
@@ -89,12 +84,9 @@ export class UserController {
     const isExistUser = !!user;
 
     return {
-      response: {
-        code: 1000,
-        message: !isExistUser
-          ? '존재하지않는 이메일 입니다'
-          : '이미 있는 이메일 입니다',
-      },
+      message: !isExistUser
+        ? '존재하지않는 이메일 입니다'
+        : '이미 있는 이메일 입니다',
       isExist: isExistUser,
     };
   }

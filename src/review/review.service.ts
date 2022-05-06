@@ -95,7 +95,7 @@ export class ReviewService {
     const review = await this.findOne(+id);
     if (!review) {
       throw new NotFoundException({
-        response: { message: '존재하지 않는 리뷰입니다.' },
+        message: '존재하지 않는 리뷰입니다.',
       });
     }
 
@@ -110,9 +110,7 @@ export class ReviewService {
   async findReviewOrNotFondError(id: number) {
     const data = await this.findOne(+id);
     if (!data) {
-      throw new NotFoundException({
-        response: { message: '존재하지 않는 리뷰 입니다.' },
-      });
+      throw new NotFoundException({ message: '존재하지 않는 리뷰 입니다.' });
     }
 
     return data;

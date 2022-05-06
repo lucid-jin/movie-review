@@ -39,10 +39,7 @@ export class ReviewController {
     );
 
     return {
-      response: {
-        message: 'ok',
-        code: 1001,
-      },
+      message: 'ok',
       review: {
         title: targetTitle,
         ...review,
@@ -59,9 +56,8 @@ export class ReviewController {
     const reviews = _reviews.map((d) => ({ title: d.targetTitle, ...d }));
 
     return {
-      response: {
-        message: 'ok',
-      },
+      message: 'ok',
+
       reviews,
     };
   }
@@ -71,9 +67,8 @@ export class ReviewController {
     const data = await this.reviewService.findReviewOrNotFondError(+id);
 
     return {
-      response: {
-        message: 'ok',
-      },
+      message: 'ok',
+
       review: {
         title: data.targetTitle,
         ...data,
@@ -97,10 +92,8 @@ export class ReviewController {
     );
 
     return {
-      response: {
-        message: 'ok',
-        code: 1000,
-      },
+      message: 'ok',
+
       review: {
         title: resData.targetTitle,
         ...resData,
@@ -115,10 +108,7 @@ export class ReviewController {
     await this.reviewService.remove(+id, review);
 
     return {
-      response: {
-        message: 'ok',
-        code: 1000,
-      },
+      message: 'ok',
     };
   }
 
@@ -144,10 +134,7 @@ export class ReviewController {
     await this.reviewService.save(data);
 
     return {
-      response: {
-        message: 'ok',
-        code: 1000,
-      },
+      message: 'ok',
       totalLike: data.likes.length,
     };
   }
@@ -166,10 +153,7 @@ export class ReviewController {
     data.likes = data.likes.filter((d) => d === id);
     await this.reviewService.save(data);
     return {
-      response: {
-        message: 'ok',
-        code: 1000,
-      },
+      message: 'ok',
       totalLike: data.likes.length,
     };
   }
