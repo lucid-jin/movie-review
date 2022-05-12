@@ -1,6 +1,13 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {Review} from "../../review/entities/review.entity";
-import {User} from "../../user/entities/user.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Review } from '../../review/entities/review.entity';
+import { User } from '../../user/entities/user.entity';
 
 @Entity('comment')
 export class Comment {
@@ -8,15 +15,15 @@ export class Comment {
   no: number;
 
   @Column({
-    type: 'text'
+    type: 'text',
   })
-  contents: string
+  contents: string;
 
-  @ManyToOne(_ => Review, review => review.no)
-  review: Review
+  @ManyToOne(() => Review, (review) => review.no)
+  review: Review;
 
-  @ManyToOne(_ => User, user => user.id)
-  user: User
+  @ManyToOne(() => User, (user) => user.id)
+  user: User;
 
   @CreateDateColumn({})
   createdAt: Date;
@@ -24,9 +31,6 @@ export class Comment {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column({default: true})
-  isValid: boolean
-
-
-
+  @Column({ default: true })
+  isValid: boolean;
 }

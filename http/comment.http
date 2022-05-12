@@ -4,19 +4,19 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
 
 {
-  "reviewNo": 26,
+  "reviewNo": 32,
   "contents": "댓글답니다"
 }
 
 
 ### GET
-GET http://localhost:3000/api/comment?reviewNo=26
+GET http://localhost:3000/api/comment?reviewNo=32
 Content-Type: application/json
 
 
 
 ### findOne
-GET http://localhost:3000/api/comment/4
+GET http://localhost:3000/api/comment/7
 Content-Type: application/json
 
 

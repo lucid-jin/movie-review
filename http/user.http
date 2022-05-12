@@ -12,6 +12,6 @@ cors-secret-key: 131312
 }
 
 ### email check
-GET http://localhost:3000/api/user/identities?type=email&value=in362
+GET http://localhost:3000/api/user/identities?type=email&value=in362@naver.com
 Content-Type: application/json
 

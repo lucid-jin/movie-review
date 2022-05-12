@@ -10,10 +10,10 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
 
 {
-  "contents": "바보래요",
+  "contents": "타이틀 테스트",
   "ratings": 1,
-  "targetType": "tv2",
-  "targetId": 124
+  "targetType": "movie",
+  "targetId": 2312312112
 }
 
 ###update
@@ -26,6 +26,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiL
   "ratings": 25
 }
 
+### find All
+GET http://localhost:3000/api/review/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
+
+
 
 ### get
 GET http://localhost:3000/api/review/23
@@ -34,5 +40,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiL
 
 ### delete
 DELETE http://localhost:3000/api/review/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
+
+### like
+PUT http://localhost:3000/api/review/32/like
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
+
+### unlike
+PUT http://localhost:3000/api/review/32/unlike
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiLCJzdWIiOiIyIiwiaWF0IjoxNjQ5MTY0MDIxLCJleHAiOjE2NDkxNjQwODF9.ZC0GOC6iqBYVOvzi7_a61a5sjzO99TGDQhMSnRg4i_Y
