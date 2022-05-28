@@ -48,10 +48,25 @@ export class CreateIdentifyDto extends createZodDto(
   }),
 ) {}
 
+export class FindEmailDto extends createZodDto(
+  z.object({
+    name: z.string(),
+    phoneNumber: z.string(),
+  }),
+) {}
+
 export class IdentifyResponseDto extends createZodDto(
   globalResponse.merge(
     z.object({
       isExist: z.boolean(),
     }),
   ),
+) {}
+
+export class UpdatePasswordDto extends createZodDto(
+  z.object({
+    password: z.string().min(3).max(10),
+    email: z.string().email(),
+    token: z.string(),
+  }),
 ) {}

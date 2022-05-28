@@ -32,11 +32,13 @@ export class UserService {
     email,
     nickName,
     name,
+    phoneNumber,
     isValid = true,
   }: {
     name?: string;
     nickName?: string;
     email?: string;
+    phoneNumber?: string;
     isValid?: boolean;
   }) {
     if (!email && !nickName && !name) {
@@ -48,16 +50,15 @@ export class UserService {
         ...(email && { email }),
         ...(name && { name }),
         ...(nickName && { nickName }),
+        ...(phoneNumber && { phoneNumber }),
         isValid,
       },
     });
   }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  update(id: number, user: User) {
+    return this.userRepository.save({
+      ...user,
+    });
   }
 }
