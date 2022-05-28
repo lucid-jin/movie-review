@@ -1,52 +1,56 @@
-import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Review} from "../../review/entities/review.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Review } from '../../review/entities/review.entity';
 
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn({
-    type: 'bigint'
+    type: 'bigint',
   })
   id: number;
 
   @Column({
-    width: 50
+    width: 50,
   })
-  email: string
+  email: string;
 
   @Column({
-    width: 50
+    width: 50,
   })
-  password: string
+  password: string;
 
   @Column({
-    width: 30
+    width: 30,
   })
-  name: string
+  name: string;
 
   @Column({
-    width: 30
+    width: 30,
   })
-  nickName: string
+  nickName: string;
 
   @Column({
-    width: 20
+    width: 20,
   })
-  
   phoneNumber: string;
 
-  @OneToMany(type => Review, review => review.no)
+  @OneToMany(() => Review, (review) => review.no)
   review: Review;
 
   @CreateDateColumn({})
   createdAt: Date;
 
-  @Column({default: true})
-  isValid: boolean
+  @Column({ default: true })
+  isValid: boolean;
 
   static removePassword(userObj: User) {
     return Object.fromEntries(
-      Object.entries(userObj).filter(([key, val]) => key !== 'password')
+      Object.entries(userObj).filter(([key, val]) => key !== 'password'),
     );
   }
-
 }

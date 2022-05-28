@@ -17,13 +17,13 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { AuthGuard } from '@nestjs/passport';
 
-import { MovieService } from '../movie/movie.service';
+import { ExternalService } from '../external/external.service';
 
 @Controller('review')
 export class ReviewController {
   constructor(
     private readonly reviewService: ReviewService,
-    private readonly movieService: MovieService,
+    private readonly externalService: ExternalService,
   ) {}
 
   @UseGuards(AuthGuard())
@@ -31,7 +31,7 @@ export class ReviewController {
   async create(@Body() createReviewDto: CreateReviewDto, @Request() req) {
     let targetTitle = '';
     try {
-      targetTitle = await this.movieService.find(
+      targetTitle = await this.externalService.find(
         createReviewDto.targetType,
         createReviewDto.targetId,
       );
@@ -67,7 +67,6 @@ export class ReviewController {
 
     return {
       message: 'ok',
-
       reviews,
     };
   }

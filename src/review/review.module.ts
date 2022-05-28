@@ -6,7 +6,7 @@ import { Review } from './entities/review.entity';
 import { User } from '../user/entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { Comment } from '../comment/entities/comment.entity';
-import { MovieModule } from '../movie/movie.module';
+import { ExternalModule } from '../external/external.module';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { MovieModule } from '../movie/movie.module';
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
-    MovieModule,
+    ExternalModule,
   ],
   controllers: [ReviewController],
   providers: [ReviewService],

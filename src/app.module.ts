@@ -12,8 +12,8 @@ import { BcryptModule } from './util/bcrypt/bcrypt.module';
 import { AuthModule } from './auth/auth.module';
 import { ReviewModule } from './review/review.module';
 import { CommentModule } from './comment/comment.module';
-import { MovieService } from './movie/movie.service';
-import { MovieModule } from './movie/movie.module';
+import { ExternalModule } from './external/external.module';
+import { SmsModule } from './sms/sms.module';
 
 @Module({
   imports: [
@@ -28,7 +28,8 @@ import { MovieModule } from './movie/movie.module';
     AuthModule,
     ReviewModule,
     CommentModule,
-    MovieModule,
+    ExternalModule,
+    SmsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

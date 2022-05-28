@@ -30,7 +30,7 @@ export class Review {
   likes: string[];
 
   @Column({
-    enum: ['movie', 'tv'],
+    enum: ['external', 'tv'],
   })
   targetType: 'movie' | 'tv';
 

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { MovieService } from './movie.service';
+import { ExternalService } from './external.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  providers: [MovieService],
+  providers: [ExternalService],
   imports: [
     HttpModule.registerAsync({
       imports: [ConfigModule],
@@ -20,6 +20,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
   ],
-  exports: [MovieService],
+  exports: [ExternalService],
 })
-export class MovieModule {}
+export class ExternalModule {}
