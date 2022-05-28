@@ -12,7 +12,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiL
 {
   "contents": "타이틀 테스트",
   "ratings": 1,
-  "targetType": "movie",
+  "targetType": "external",
   "targetId": 2312312112
 }
 

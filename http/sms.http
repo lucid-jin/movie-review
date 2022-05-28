@@ -1,0 +1,18 @@
+### send sms
+POST {{baseURL}}/sms/user
+Content-Type: application/json
+
+{
+  "phoneNumber": "01093041905",
+  "email": "in362@naver.com"
+}
+
+
+### verify
+POST {{baseURL}}/sms/verify
+Content-Type: application/json
+
+{
+  "phoneNumber": "01093041905",
+  "number": 7764
+}

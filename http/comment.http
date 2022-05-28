@@ -10,7 +10,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMjMxMjMiL
 
 
 ### GET
-GET http://localhost:3000/api/comment?reviewNo=32
+GET https://movie-review-app-server.herokuapp.com/api/comment?reviewNo=32
 Content-Type: application/json
 
 

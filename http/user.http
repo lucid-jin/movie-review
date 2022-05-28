@@ -15,3 +15,11 @@ cors-secret-key: 131312
 GET http://localhost:3000/api/user/identities?type=email&value=in362@naver.com
 Content-Type: application/json
 
+
+### findEmail
+GET http://localhost:3000/api/user/email?name=23123&phoneNumber=11111
+Content-Type: application/json
+
+
+### sendSMS
+GET {{baseURL}}/user/sms
